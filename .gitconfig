@@ -1,0 +1,7 @@
+[user]
+	email = ginkgomzd@fastmail.com
+	name = MZD
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
