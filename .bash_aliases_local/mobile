@@ -1,0 +1,23 @@
+#!/bin/bash
+
+alias anstudio='/usr/local/lib/android-studio/bin/studio.sh'
+
+cdv_plugin_rm_all() {
+  for pl in `cordova plugins | cut -f 1 -d ' '`; do cordova plugin rm $pl; done
+}
+
+adbinst() {
+  apk=`find . -name android-debug.apk`
+  platforms=`find .  -maxdepth 1 -type d -name platforms`
+  if [ "$platforms" != './platforms' ] ; then echo "NOT IN PROJECT DIR"; return;  fi
+
+  package=`awk 'match($0, /package="([^"]*)/, matches) { print matches[1] }' <./platforms/android/AndroidManifest.xml`;
+
+  echo "uninstall " $package
+  adb $1 uninstall $package
+  echo "install apk" $apk
+  adb $1 install $apk
+
+  #start the app
+  adb shell am start -n $package/.MainActivity
+}

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# helpful for developing aliases
+realias() {
+  . ~/.bash_aliases
+}
+
+alias cld=clouddrive
+alias pgp=gpg2
+
+# cli window mgmt
+alias wm='dvtm -m ^u'
+
+alias xclip='xclip -selection c'
+alias ctrl-v='xclip -o'
+
+clip() {
+	cat "$@" | tee /dev/tty | xclip -selection c
+}
+
+alias open='xdg-open 2>/dev/null'
+
+gless() {
+  FILE="/tmp/$(basename $0).$RANDOM.txt"
+  echo "$FILE" # show file name
+  cat - > "$FILE" # create files
+  gvim "$FILE" 2>/dev/null &
+}
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+restart-gnome() {
+  busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting…")'
+}

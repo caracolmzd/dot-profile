@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# # #
+# https://github.com/chubin/wttr.in/blob/master/README.md
+#
+# Special URLs:
+#    /:help                  # show this page
+#    /:bash.function         # show recommended bash function wttr()
+#    /:translation           # show the information about the translators
+#
+function weather () {
+    local location=22601
+    local request="v2.wttr.in/${1-${location}}"
+    echo ${request}
+    [ "$(tput cols)" -lt 125 ] && request+='?nu'
+    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+}
+
+animate_gif_list(){
+
+for f in `ls *JPG | sort`; do
+	list="$list -page +0+0 $f"
+done
+
+}
+
+animate_gif() {
+  convert -delay 40 -size 720x450 "$@" ~/downloads/animated.gif
+}
+
+colour_chart() {
+  # https://askubuntu.com/questions/558280/changing-colour-of-text-and-background-of-terminal
+  n=0; i=0;
+  for((i=16; i<256; i++)); do
+    # Samples:
+    # Set background:
+    # printf "\e[48;5;${i}m%03d" $i;
+    # Set foreground:
+    # printf "\e[38;5;${n}m%03d" $i;
+
+    # do some fancy stuff to restrict the range
+    # of values for the text (foreground) color in the chart ($n)
+    n=$((256-i%6))
+    # echo $n
+
+    printf "\e[48;5;${i}m\e[38;5;${n}m %03d %d" $i $n;
+    printf '\e[0m';
+    [ ! $((($i - 15) % 6)) -eq 0 ] && printf ' ' || printf '\n'
+  done
+}
+
+###
+# Files DB
+if [ -f /usr/local/lib/mzd/files-db ]; then
+    source /usr/local/lib/mzd/files-db
+fi
