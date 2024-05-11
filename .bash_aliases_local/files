@@ -102,7 +102,15 @@ files-here() {
 }
 
 find-links() {
-  find -L "$2" -samefile "$1" 2>/dev/null
+    if [ $# -lt 1 ]; then
+        echo "Usage: find-links <file_path> [starting_directory=/]"
+        return 1
+    fi
+
+    file_path=$1
+    starting_directory=${2:-/}
+
+    find -L "$starting_directory" -samefile "$file_path" 2>/dev/null
 }
 
 # # #
