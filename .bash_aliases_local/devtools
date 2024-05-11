@@ -13,7 +13,7 @@ if_url() {
 
 alias dk=docker
 alias dkr='docker run --rm'
-alias dkc='docker-compose'
+alias dkc='docker compose'
 alias dki='docker image'
 alias dkl='docker ps -a --format '\''table {{if .ID}}{{slice .ID 0 4}}{{end}}\t{{.Names}}\t{{if .Status}}{{slice .Status 0 2}}{{end}}\t{{.Image}}\t{{.Command}}'\'
 alias dkll='dkl --no-trunc'
