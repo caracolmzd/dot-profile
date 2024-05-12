@@ -101,17 +101,59 @@ files-here() {
 	find . -path '*/.git' -prune -o -type f
 }
 
+multi-inode-files() {
+    directory=${1:-.}  # Set directory parameter to current directory if not provided
+    shopt -s dotglob  # Include dot-files in the file globbing
+    find "$directory" -maxdepth 1 -type f -links +1 -printf "%i %p\n" 2>/dev/null | sort -n
+    shopt -u dotglob  # Reset dot-files globbing behavior
+}
+
 find-links() {
     if [ $# -lt 1 ]; then
-        echo "Usage: find-links <file_path> [starting_directory=/]"
+        echo "Usage: find-links <file_path> [starting_directory=.]"
         return 1
     fi
 
     file_path=$1
-    starting_directory=${2:-/}
+    starting_directory=${2:-.}  # Set starting directory to current directory if not provided
 
-    find -L "$starting_directory" -samefile "$file_path" 2>/dev/null
+    echo -n "Searching for links..."
+
+    # Start a background process to output a progress indicator
+    while true; do
+        echo -n "." >&2; 
+        sleep 1;  # Output a period to stderr
+    done &
+
+    progress_pid=$!  # Get the PID of the background process
+
+    find_output=$(find -L "$starting_directory" -samefile "$file_path" 2>/dev/null)
+
+    # Stop the progress indicator 
+    kill $progress_pid 2>/dev/null  # Stop the background process without outputting termination message
+
+    wait $progress_pid 2>/dev/null  # Wait for the process to finish to prevent the termination message
+
+    echo "" >&2  # Move to a new line on stderr
+    echo "$find_output"
 }
+
+
+find-all-links() {
+    directory=${1:-.}  # Set directory parameter to current directory if not provided
+    multi_inodes=$(multi-inode-files "$directory")
+    
+    while read -r line; do
+        inode=$(echo "$line" | awk '{print $1}')
+        file=$(echo "$line" | awk '{print $2}')
+        
+        echo "Multi-inode file: $file"
+        echo "Linked paths:"
+        find-links "$file" "$directory" | grep -v "$file"
+        echo "---------------------"
+    done <<< "$multi_inodes"
+}
+
 
 # # #
 # get the most recently modified file
