@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#
+# Source extra commands
+#
+
+if [[ -f /usr/share/autojump/autojump.sh ]]; then
+    . /usr/share/autojump/autojump.sh
+fi
+
+# cli window mgmt
+alias wm='dvtm -m ^u'
+
+alias cld=clouddrive
+

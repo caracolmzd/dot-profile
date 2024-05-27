@@ -1,15 +1,12 @@
 #!/bin/bash
 
 # helpful for developing aliases
-realias() {
-  . ~/.bash_aliases
+re-inits() {
+  . ~/.bashrc
 }
 
-alias cld=clouddrive
-alias pgp=gpg2
-
-# cli window mgmt
-alias wm='dvtm -m ^u'
+#alias pgp=gpg2
+alias pgp=gpg
 
 alias xclip='xclip -selection c'
 alias ctrl-v='xclip -o'
@@ -31,6 +28,13 @@ gless() {
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-restart-gnome() {
-  busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting…")'
+# # #
+# executes arguments for every line from stdin
+# e.g. ls -1p | stat -t
+forevery() {
+  while read -r line ; do
+    # echo "'$*  $line'"
+    eval "$* $line"
+    echo ----
+  done
 }

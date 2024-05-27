@@ -30,16 +30,8 @@ alias cplt=copilot
 alias lin-util='linode-cli'
 alias lin='linode-cli linodes'
 
-#
-# Museum
-#
 
-for-every() {
-while read line ; do
-  read input_line
-  `printf "'$1'" "$input_line"`
-done
-}
+# SVN
 
 svngrep()
 {
@@ -51,37 +43,3 @@ svndiff()
  svn diff "$@" | colordiff | less -RS
 }
 
-killtunnel()
-{
-  if [ $# == 1 ]; then
-    kill_named_ps $1
-  else # kill indiscriminately
-    kill_named_ps sligotunnel
-    kill_named_ps tunnel.ncba
-    kill_named_ps frontlinetunnel
-    kill_named_ps leonardotunnel
-  fi
-}
-
-sligo()
-{
-  nohup ssh sligotunnel -N &
-  echo Tunneling Sligo
-}
-
-frontline() {
-  nohup ssh frontlinetunnel -N > ~/.frontlinetunnel.log 2>&1 &
-  echo "Tunneling Frontline Defenders"
-  echo "web on: http://localhost:8081/db-gsdev/"
-  echo "Use killtunnel to close."
-  sleep 5
-  read -p "login to web [w] or shell [s] or done [d]?" answer
-  case $answer in
-    [w]* ) xdg-open http://localhost:8081/db-gsdev/
-        echo "opened in default browser."
-    ;;
-    [s]* ) echo "opening ssh to host - 'frontline'"
-       echo "please be patient while I hop around the internet"
-       ssh frontline
-  esac
-}

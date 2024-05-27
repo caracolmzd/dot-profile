@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# # #
+# Dirs
+#
+
+alias pd='pushd'
+
+alias nxt='pushd +1'
+alias nx=nxt
+
+drs() {
+	curwd=$(dirname $(pwd))
+	# echo ${curwd} + sed s#${curwd}\/##    
+	dirs -l -p | sed s#${curwd}\/##
+}
+
+load-dirs() {
+	dirs -c # clear ring
+	while read -r dirname 
+	do
+		pushd -n "$dirname" >/dev/null
+	done <<< "$(find * -maxdepth 0 -type d)"
+	drs
+}
+
+follow() {
+	follow=$(readlink -f "$1")
+	cd "${follow}" || return 1
+}
+
+# # #
+# locate an executable and cd
+#
+which-dir() {
+	file_location=$(which "$1")
+	if [ -L "$file_location" ]; then
+		file_location=$(readlink -f "$file_location")
+	fi
+	dir_location=$(dirname "$file_location")
+	pushd "$dir_location" >/dev/null
+}
