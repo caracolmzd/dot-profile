@@ -3,7 +3,7 @@
 killtunnel()
 {
   if [ $# == 1 ]; then
-    kill_named_ps $1
+    kill_named_ps ${1}
   else # kill indiscriminately
     kill_named_ps sligotunnel
     kill_named_ps tunnel.ncba

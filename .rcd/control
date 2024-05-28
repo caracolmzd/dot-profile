@@ -4,13 +4,13 @@ touchpad_restart() {
 }
 
 backup_phone() {
-  rsync -au --exclude=dcim/ $1 /home/mzd/phone/sdcard/
-  rsync -au $1/dcim /home/mzd/phone/
+  rsync -au --exclude=dcim/ ${1} /home/mzd/phone/sdcard/
+  rsync -au ${1}/dcim /home/mzd/phone/
 }
 
 kill_named_ps() {
-  echo kill -KILL \`pgrep -f $1\`
-  kill -KILL $(pgrep -f "$1")
+  echo kill -KILL \`pgrep -f ${1}\`
+  kill -KILL $(pgrep -f "${1}")
 }
 
 killskype()

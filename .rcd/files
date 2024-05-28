@@ -82,7 +82,7 @@ same-file() {
         return 1
     fi
 
-    file_path=$1
+    file_path=${1}
     starting_directory=${2:-.}  # Set starting directory to current directory if not provided
 
     echo -n "Searching for same-file..."
@@ -115,7 +115,7 @@ find-all-links() {
 # # #
 # get the most recently modified file
 last-modified() {
-  fullpath=$(find "$1" -maxdepth 1 -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")
+  fullpath=$(find "${1}" -maxdepth 1 -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")
   basename "$fullpath"
 }
 
@@ -138,7 +138,7 @@ warc() {
     --convert-links \
     --execute robots=off \
     --random-wait \
-    "$1"
+    "${1}"
 }
     # --directory-prefix=. \
     # --span-hosts \

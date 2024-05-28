@@ -14,9 +14,9 @@ adbinst() {
   package=`awk 'match($0, /package="([^"]*)/, matches) { print matches[1] }' <./platforms/android/AndroidManifest.xml`;
 
   echo "uninstall " $package
-  adb $1 uninstall $package
+  adb ${1} uninstall $package
   echo "install apk" $apk
-  adb $1 install $apk
+  adb ${1} install $apk
 
   #start the app
   adb shell am start -n $package/.MainActivity

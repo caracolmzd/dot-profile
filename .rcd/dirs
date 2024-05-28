@@ -24,8 +24,10 @@ load-dirs() {
 	drs
 }
 
+#
+# resolve the full path of a given link and cd
 follow() {
-	follow=$(readlink -f "$1")
+	follow=$(readlink -f "${1}")
 	cd "${follow}" || return 1
 }
 
@@ -33,7 +35,7 @@ follow() {
 # locate an executable and cd
 #
 which-dir() {
-	file_location=$(which "$1")
+	file_location=$(which "${1}")
 	if [ -L "$file_location" ]; then
 		file_location=$(readlink -f "$file_location")
 	fi

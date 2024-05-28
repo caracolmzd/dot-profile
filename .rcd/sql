@@ -17,12 +17,11 @@ alias which-conf="ls -hl ~/.my.cnf && echo 'show databases;' | mysql"
 
 my-conf()
 {
-    this_dir=`pwd`
-    cd `dirname $1`
+    pushd "$(dirname '${1}')"
     rm -f ~/.my.cnf
-    ln -s `readlink -f "$1"` ~/.my.cnf
+    ln -s "$(readlink -f '${1}')" ~/.my.cnf
     echo "show databases;" | mysql
-    cd $this_dir
+    popd
 }
 
 format_sql() {
