@@ -9,3 +9,9 @@ import-key:
 
 export-key:
 	gpg --export --armor ${KEY_ID} > ${OUTPUT}
+
+export-secret-key:
+	gpg --export-secret-keys --armor ${KEY_ID} > ${OUTPUT}
+
+generate-key:
+	gpg --full-generate-key
