@@ -1,8 +1,10 @@
+SendEnv LANG LC_*
+HashKnownHosts yes
 TCPKeepAlive yes
 ServerAliveInterval 20
 ServerAliveCountMax 6
 AddKeysToAgent yes
-ForwardAgent no
+# ForwardAgent yes
 #PubkeyAuthentication no
 #PasswordAuthentication yes
 
