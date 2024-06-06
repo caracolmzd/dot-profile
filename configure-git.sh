@@ -23,4 +23,6 @@ git config --global core.editor "$editor"
 
 echo "Git global configuration has been updated."
 
-echo "RECOMMENDED: run generate-git-signing-key() and configure-git-signing-key() to setup GPG signing of commits."
+git config --global --list
+
+echo "RECOMMENDED: run generate-git-signing-key() and configure-git-signing() to setup GPG signing of commits."
