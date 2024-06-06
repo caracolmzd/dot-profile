@@ -15,3 +15,7 @@ export-secret-key:
 
 generate-key:
 	gpg --full-generate-key
+
+configure-git-signing:
+	git config --global user.signingkey ${KEY_ID}
+	git config --global commit.gpgsign true
