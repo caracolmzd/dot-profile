@@ -59,18 +59,19 @@ gpg-rm-key() {
     gpg --batch --yes --delete-key "$FINGERPRINT"
 }
 
-
-generate-git-signing-key() {
+# quick-create signing key non-interactively, e.g. for git commits
+gpg-generate-signing-key() {
     if [ -z "$USER_NAME" ] || [ -z "$EMAIL" ]; then
         echo "Error: USER_NAME or EMAIL environment variables are not set. Please set USER_NAME and EMAIL before generating the key."
         return 1
     fi
 
     gpg --batch --passphrase '' --quick-generate-key "$USER_NAME <$EMAIL>" rsa4096 sign never
+	echo "Use 'gpg-export-key KEY_ID=<key-id> OUTPUT=<output-file>' to export the key."
 }
 
 
-configure-git-signing() {
+git-configure-signing() {
     if [ -z "$KEY_ID" ]; then
         echo "Error: KEY_ID environment variable is not set. Please set KEY_ID to the ID of the key."
         return 1
@@ -79,5 +80,6 @@ configure-git-signing() {
     git config --global commit.gpgsign true
 
 	echo "Git signing key configured."
-	echo "TODO: add the key to your GitHub account."
+	echo "TODO: Be sure you added the key to your GitHub account."
+	echo "Use 'gpg-export-key KEY_ID=<key-id> OUTPUT=<output-file>' to export the key."
 }

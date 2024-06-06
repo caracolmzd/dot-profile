@@ -20,7 +20,7 @@ ssh-key-fingerprint() {
 
 # find key location by fingerprint
 # find_key <fingerprint>
-find-ssh-key() {
+ssh-key-find() {
     local keys
     keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
     for k in $keys; do
@@ -33,7 +33,7 @@ find-ssh-key() {
 }
 
 # list ssh keys with fingerprints
-list-ssh-keys() {
+ssh-keys-list() {
     local keys
     keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
     for k in $keys; do

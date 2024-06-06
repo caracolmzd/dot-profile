@@ -25,4 +25,4 @@ echo "Git global configuration has been updated."
 
 git config --global --list
 
-echo "RECOMMENDED: run generate-git-signing-key() and configure-git-signing() to setup GPG signing of commits."
+echo "RECOMMENDED: run gpg-generate-signing-key() and git-configure-signing() to setup GPG signing of commits."
