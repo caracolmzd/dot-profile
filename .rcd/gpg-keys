@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# list keys with fingerprints
+gpg-list-keys() {
+	echo "Public keys:"
+    gpg --list-keys --fingerprint
+    echo "Secret keys:"
+	gpg --list-secret-keys --fingerprint
+}
+
+# list keys with key IDs
+gpg-list-key-ids() {
+    gpg --list-keys --with-colons | awk -F: '/^[sp]ub:/ {if (count > 0) print "---"; print $1 ": " $5; count++} /uid:/ {print $1 ": " $10} END { print "---"}'
+}
+
+gpg-import-key() {
+    if [ -z "$KEY_FILE" ]; then
+        echo "Error: KEY_FILE environment variable is not set. Please set KEY_FILE to the path of the key file."
+        return 1
+    fi
+    gpg --import ${KEY_FILE}
+}
+
+gpg-export-key() {
+    if [ -z "$KEY_ID" ]; then
+        echo "Error: KEY_ID environment variable is not set. Please set KEY_ID to the ID of the key."
+        return 1
+    fi
+    if [ -z "$OUTPUT" ]; then
+        echo "Error: OUTPUT environment variable is not set. Please set OUTPUT to the path for the exported key."
+        return 1
+    fi
+    gpg --export --armor ${KEY_ID} > ${OUTPUT}
+}
+
+gpg-export-secret-key() {
+    if [ -z "$KEY_ID" ]; then
+        echo "Error: KEY_ID environment variable is not set. Please set KEY_ID to the ID of the key."
+        return 1
+    fi
+    if [ -z "$OUTPUT" ]; then
+        echo "Error: OUTPUT environment variable is not set. Please set OUTPUT to the path for the exported key."
+        return 1
+    fi
+    gpg --export-secret-keys --armor ${KEY_ID} > ${OUTPUT}
+}
+
+# must specify key by fingerprint to delete non-interactively
+gpg-rm-key() {
+    if [ -z "$FINGERPRINT" ]; then
+        echo "Error: FINGERPRINT environment variable is not set. Please set FINGERPRINT to the key you want to delete."
+        return 1
+	fi
+
+    # Delete the secret key first
+    gpg --batch --yes --delete-secret-keys "$FINGERPRINT"
+
+    # Delete the public key
+    gpg --batch --yes --delete-key "$FINGERPRINT"
+}
+
+
+generate-git-signing-key() {
+    if [ -z "$USER_NAME" ] || [ -z "$EMAIL" ]; then
+        echo "Error: USER_NAME or EMAIL environment variables are not set. Please set USER_NAME and EMAIL before generating the key."
+        return 1
+    fi
+
+    gpg --batch --passphrase '' --quick-generate-key "$USER_NAME <$EMAIL>" rsa4096 sign never
+}
+
+
+configure-git-signing() {
+    if [ -z "$KEY_ID" ]; then
+        echo "Error: KEY_ID environment variable is not set. Please set KEY_ID to the ID of the key."
+        return 1
+    fi
+    git config --global user.signingkey ${KEY_ID}
+    git config --global commit.gpgsign true
+}
