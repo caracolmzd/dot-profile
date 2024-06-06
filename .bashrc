@@ -67,12 +67,12 @@ if [ "$color_prompt" = yes ]; then
 
     # Custom 1
     # PS1="\n\[\033[35m\]\$(/bin/date +%F\ wk#%V\ dy#%j\ %a\ %_R) \[\033[1;34m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::'): \[\033[1;36m\]\$(/bin/ls -1 | /usr/bin/wc -l | /bin/sed 's: ::g') files \[\033[1;33m\]\$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b\[\033[0m\] \n\[\033[1;31m\]\u☯ \h: \[\033[32m\]\w>\[\033[0m\]"
-    
+
     # Custom 2
     # PS1="\[\033[32m\]\w\[\033[00m\]\n\[\033[35m\]\$(/bin/date +%F\ wk#%V\ dy#%j\ %a\ %_R) \[\033[1;34m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::'): \[\033[1;36m\]\$(/bin/ls -1 | /usr/bin/wc -l | /bin/sed 's: ::g') files \[\033[1;33m\]\$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b\[\033[0m\] \[\033[1;31m\] \n\u☯ \h: >\[\033[00m\]"
 
     # Custom 3
-    PS1="\n\[\033[35m\]\$(/bin/date +%F\ wk#%V\ dy#%j\ %a\ %_R) \[\033[1;34m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::'): \[\033[1;36m\] \[\033[1;31m\]\u☯ \h: \[\033[32m\]\w>\[\033[0m\]\n"
+    PS1="\n\[\033[35m\]\$(/bin/date +%F\ %a\ %_R\ wk#%V\ dy#%j) \[\033[1;34m\]\$(/usr/bin/tty | /bin/sed -e 's:/dev/::'): \[\033[1;36m\] \[\033[1;31m\]\u☯ \h: \[\033[32m\]\w>\[\033[0m\]\n"
 
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
@@ -83,7 +83,7 @@ unset color_prompt force_color_prompt
 if [ -x /usr/bin/dircolors ]; then
     COLOR_AUTO='--color=auto'
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    
+
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
 
