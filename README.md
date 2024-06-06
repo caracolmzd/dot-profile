@@ -52,9 +52,13 @@ This is just my SSH config file, but the configs in the beginning may be of gene
 
 ## Git Config
 
-Use the configure-git.sh script to set git global configs with prompts and defaults that I like.
+Use the `configure-git.sh` script to set git global configs with prompts and defaults that I like.
 
 It will recommend and point you to the functions to configure commit signing (create a key, and update your global config).
+
+## Docker Aliases
+
+I'm quite fond of these. See them in the `.rcd/devtools` file. Most start with "dk".
 
 ## Setup
 
