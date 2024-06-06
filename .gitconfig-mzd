@@ -1,12 +1,12 @@
 [user]
-	email = michael@caracolazul.dev
 	name = MZD
-	signingkey = 8085F1967E0A36A6
-[commit]
-	gpgsign = true
+	email = michael@caracolazul.dev
+	signingkey = 224A56038454162C
 [pull]
 	rebase = true
 [init]
 	defaultBranch = main
 [core]
 	editor = vim
+[commit]
+	gpgsign = true
