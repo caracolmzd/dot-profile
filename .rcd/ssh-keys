@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#
+# utils for ssh keys using fingerprints
+#
+
+# key store path, default to ~/.ssh
+SSH_KEY_PATH=${SSH_KEY_PATH:-~/.ssh}
+
+# allowed formats: md5, sha256
+# set to md5 if not set by user:
+FP_FORMAT=${FP_FORMAT:-md5}
+
+ssh-key-fingerprint() {
+    local key=$1
+    local fp
+    fp=$(ssh-keygen -l -E ${FP_FORMAT} -f $key)
+    printf "%30s\t ${fp}\n" $key
+}
+
+# find key location by fingerprint
+# find_key <fingerprint>
+find-ssh-key() {
+    local keys
+    keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
+    for k in $keys; do
+        local fp
+        fp=$(ssh-key-fingerprint ${SSH_KEY_PATH}/$k)
+        if [[ $fp == *"$1"* ]]; then
+            echo $fp
+        fi
+    done
+}
+
+# list ssh keys with fingerprints
+list-ssh-keys() {
+    local keys
+    keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
+    for k in $keys; do
+        ssh-key-fingerprint ${SSH_KEY_PATH}/$k
+    done
+}
