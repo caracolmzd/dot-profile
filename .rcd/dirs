@@ -53,7 +53,6 @@ load-dirs() {
 		for dir in "$@"; do
 			# get the real path of the directory
 			new_path=$(realpath ${dir})
-			echo $new_path
 			# if not already in the stack, push it
 			if ! dirs -v -l | grep -q "^$new_path$"; then
 				pushd -n "$new_path" >/dev/null
