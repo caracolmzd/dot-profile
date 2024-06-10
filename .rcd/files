@@ -56,14 +56,13 @@ alias lS='ls -lS' # sort by size
 alias lls='tree -L 2'
 alias llls='tree -L 3'
 alias lllls='tree -L 4'
-alias ld='tree -dL 2'
+# NB: see dirs aliases for directory listings
 
 # # #
 # .git dirs are pruned, -o (or) files are printed
 files-here() {	
 	find . -path '*/.git' -prune -o -type f
 }
-
 
 find-hard-links() {
     directory=${1:-.}  # Set directory parameter to current directory if not provided

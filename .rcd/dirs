@@ -4,41 +4,94 @@
 # Dirs
 #
 
-alias pd='pushd'
+# tree - list contents of directories in a tree-like format.
+alias ld='tree -dL 2'
+alias lld='tree -dL 3'
 
+#
+# helpers for dirs/pushd/popd shell built-ins 
+#
+# dst/dir-stack lists the directory stack with indexes
+# nxt (pushd +1) moves to the next directory in the stack
+# prv (pushd -1) moves to the previous directory in the stack
+# pd move to a passed index in the stack, or pushes a directory (saves typing the +/-)
+# load-dirs loads all directories in the current directory into the stack
+#
+
+alias dir-stack='dirs -v'
+alias dst=dir-stack
 alias nxt='pushd +1'
 alias nx=nxt
+alias prv='pushd -1'
 
-drs() {
-	curwd=$(dirname $(pwd))
-	# echo ${curwd} + sed s#${curwd}\/##    
-	dirs -l -p | sed s#${curwd}\/##
+#
+# wrap pushd so we can pass a stack position without plus or minus
+# and list the resulting stack
+pd() {
+	if [[ "$1" =~ ^[0-9]+$ ]]; then
+		pushd +$1 >/dev/null || return 1
+	else
+		pushd "$1"
+	fi
+	dir-stack
 }
 
+#
+# load the passed list of directories into the stack, 
+# or default to load-cur-dirs()
+# -c will clear the stack before loading
 load-dirs() {
+	if [ "$#" -eq 0 ]; then
+		load-cur-dirs
+	else
+		# if "-c" was passed, clear the stack
+		if [ "$1" == "-c" ]; then 
+			shift 
+			dirs -c
+		fi
+		
+		for dir in "$@"; do
+			# get the real path of the directory
+			new_path=$(realpath ${dir})
+			echo $new_path
+			# if not already in the stack, push it
+			if ! dirs -v -l | grep -q "^$new_path$"; then
+				pushd -n "$new_path" >/dev/null
+			fi
+		done
+		dir-stack
+	fi
+}
+
+#
+# load all directories in the current directory
+load-cur-dirs() {
 	dirs -c # clear ring
 	while read -r dirname 
 	do
 		pushd -n "$dirname" >/dev/null
-	done <<< "$(find * -maxdepth 0 -type d)"
-	drs
+	done <<< "$(find -L "$(realpath .)"/* -maxdepth 0 -type d)"
+	dir-stack
 }
 
 #
-# resolve the full path of a given link and cd
+# Misc
+#
+
+#
+# resolve the real path of a given link and cd
 follow() {
-	follow=$(readlink -f "${1}")
-	cd "${follow}" || return 1
+	cannonical=$(readlink -f "${1}")
+	pushd "${cannonical}" >/dev/null || return 1
 }
 
-# # #
-# locate an executable and cd
 #
+# locate an executable and cd
 which-dir() {
 	file_location=$(which "${1}")
 	if [ -L "$file_location" ]; then
 		file_location=$(readlink -f "$file_location")
 	fi
 	dir_location=$(dirname "$file_location")
-	pushd "$dir_location" >/dev/null
+	follow "$dir_location" >/dev/null
 }

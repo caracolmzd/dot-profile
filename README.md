@@ -32,6 +32,23 @@ Just for fun, I define a custom prompt. There are some other examples commented-
 
 See the `PS1=` definitions.
 
+## Navigating Dirs
+
+I can't believe how many years I went without learning the `pushd/popd` shell built-ins. People have come up with pretty complicated solutions to navigating the directory structure.
+
+See `help` for `pushd`, `popd`, and `dirs` to understand the built-ins. 
+
+TL;DR - Navigate directories by "pushing" onto a stack, or ring. Rotate the ring, or pop-off entires (and change to the new top of the stack).
+
+I think my wrappers make it more intuitive with a default stack-listing with indexes. This makes it as easy as selecting from a menu and avoids using awkward `+/-` directional params.
+
+* `dst`/`dir-stack` lists the directory stack with indexes
+* `pd` push a directory or move to a passed index in the stack (saves typing the +/-)
+* `load-dirs` pass a list of directories to add to the stack. With no args, adds all directories in the current directory. Pass the option, `-c` to clear the stack first.
+* `nxt` (pushd +1) moves to the next directory in the stack
+* `prv` (pushd -1) moves to the previous directory in the stack
+
+
 ## Crypto
 
 #### SSH-keys
