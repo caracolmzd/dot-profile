@@ -38,7 +38,7 @@ I can't believe how many years I went without learning the `pushd/popd` shell bu
 
 See `help` for `pushd`, `popd`, and `dirs` to understand the built-ins. 
 
-TL;DR - Navigate directories by "pushing" onto a stack, or ring. Rotate the ring, or pop-off entires (and change to the new top of the stack).
+TL;DR - Navigate directories by "pushing" onto a stack, or ring. Rotate the ring, or pop-off entries (and change to the new top of the stack).
 
 I think my wrappers make it more intuitive with a default stack-listing with indexes. This makes it as easy as selecting from a menu and avoids using awkward `+/-` directional params.
 
@@ -82,13 +82,15 @@ I'm quite fond of these. See them in the `.rcd/devtools` file. Most start with "
 
 I have not tried deploying the `.bashrc` file contents to Zsh, let me know how it goes! 
 
-You can look for dependencies and recommendations with the included `./system-chk.sh` script. Nothing is strictly required. If you run it with verbose (`-v`) it will print positive confirmation as well as failures.
-
 Clone this repo to `~/.dot-profile` (or whatever you want).
 
-Not every step is required. In your `~` dir...
+You can look for dependencies and recommendations with the included `./system-chk.sh` script. If you run it with verbose (`-v`) it will print positive confirmation in addition to checks that fail. You may decide whether to resolve the failed checks or not.
+
+A full setup looks like the following, but you should pick and choose.
 
 ```bash
+# see what is missing
+$> source system-chk.sh
 
 # install aliases and custom prompt
  $> ln -s .dot-profile/.rcd
