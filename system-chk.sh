@@ -42,6 +42,7 @@ gpg
 gvim
 curl
 nano
+pushd
 ssh
 ssh-keygen
 tree
