@@ -48,6 +48,7 @@ I think my wrappers make it more intuitive with a default stack-listing with ind
 * `nxt` (pushd +1) moves to the next directory in the stack
 * `prv` (pushd -1) moves to the previous directory in the stack
 
+> Bonus: I recommend you install the `tree` command. This repo contains aliases for `ld` and `lld` to list 2 or 3 levels (respectively) of directories in a formatted tree.
 
 ## Crypto
 
@@ -77,9 +78,11 @@ It will recommend and point you to the functions to configure commit signing (cr
 
 I'm quite fond of these. See them in the `.rcd/devtools` file. Most start with "dk".
 
-## Setup
+# Setup
 
 I have not tried deploying the `.bashrc` file contents to Zsh, let me know how it goes! 
+
+You can look for dependencies and recommendations with the included `./system-chk.sh` script. Nothing is strictly required. If you run it with verbose (`-v`) it will print positive confirmation as well as failures.
 
 Clone this repo to `~/.dot-profile` (or whatever you want).
 
