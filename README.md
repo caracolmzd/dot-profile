@@ -36,19 +36,75 @@ See the `PS1=` definitions.
 
 I can't believe how many years I went without learning the `pushd/popd` shell built-ins. People have come up with pretty complicated solutions to navigating the directory structure.
 
-See `help` for `pushd`, `popd`, and `dirs` to understand the built-ins. 
+See `help` for `pushd`, `popd`, and `dirs` for an introduction to the built-ins. 
 
 TL;DR - Navigate directories by "pushing" onto a stack, or ring. Rotate the ring, or pop-off entries (and change to the new top of the stack).
 
-I think my wrappers make it more intuitive with a default stack-listing with indexes. This makes it as easy as selecting from a menu and avoids using awkward `+/-` directional params.
+I have drastically customized the builtins to make them more intuitive, to me. In particular, I was confused about using indexes. "Rotating" the stack works intuitively with indexes. Rotating `+1`, makes the entry at index-1 the top of the stack. 
 
-* `dst`/`dir-stack` lists the directory stack with indexes
-* `pd` push a directory or move to a passed index in the stack (saves typing the +/-)
-* `load-dirs` pass a list of directories to add to the stack. With no args, adds all directories in the current directory. Pass the option, `-c` to clear the stack first.
-* `nxt` (pushd +1) moves to the next directory in the stack
-* `prv` (pushd -1) moves to the previous directory in the stack
+But rotating `-1` broke my brain, because it is a zero-based index, not a number of positions. The `pd` wrapper of `pushd`, *subtracts 1 from reverse-indexes*, so `-1` references the last index in the stack, instead of the second-to-last index. You can also use `nxt` and `prv` as aliases for `pushd +1` and `pushd -0`, respectively. 
 
-> Bonus: I recommend you install the `tree` command. This repo contains aliases for `ld` and `lld` to list 2 or 3 levels (respectively) of directories in a formatted tree.
+The core wrapper of `pushd` is `dir-stack`, also `pd`, which does:
+ * de-dupes the stack and de-references links
+ * `-c` clears the stack
+ * adds one or more directories to the stack (also works with `-c`)
+ * advances to the next directory if no arguments are passed
+ * advances to the index passed (no `+` needed, but optional)
+ * reverses to a negative index passed (subtracting one first, see above)
+ * displays the stack with indexes (calls `dir-index`)
+
+All of the commands are wrappers for the `dir-stack` command, but alter the output and default arguments.
+
+Instead of outputting the current stack, `nxt` and `prv` output the contents of the new directory.
+
+Instead of defaulting to advancing one, `load-dirs` loads all of the directories in the current directory.
+
+#### Commands
+
+* `dir-index`/`dix` lists the directory stack with indexes
+* `dir-stack`/`pd` push a directory or move to an index in the stack (`+` is optional, `-` reverses direction)
+* `nxt`/`nx` advance the stack and display contents
+* `prv`/`pv` reverse the stack and display contents
+* `load-dirs` defaults to adding all of the directories in the current directory (and clearing the previous stack).
+* `popd` is still used to remove the top of the stack
+
+#### Example 
+A typical use-case, using short-aliases, could be:
+
+``` bash
+# initialize the stack. (output is same as dir-index/dix)
+# note that ToDo/ is de-referenced to the canonical path
+ mzd@penguin: ~> pd Documents Lab/website/ ToDo
+ 0  ~/Documents/ToDo/projects/active
+ 1  ~/Lab/website
+ 2  ~/Documents
+ 3  ~
+
+# advance to index 1
+# the new stack state is displayed
+mzd@penguin: ~/Documents/ToDo/projects/active> pd 1
+ 0  ~/Lab/website
+ 1  ~/Documents
+ 2  ~
+ 3  ~/Documents/ToDo/projects/active
+
+# go-back. (new dir contents are displayed in a custom format)
+mzd@penguin: ~/website> pv
+ -   /home/mzd/Documents/ToDo/projects/active  - 
+.
+├── assets
+├── ACTIONS.md
+├── Admin.md
+├── ERRANDS.md
+├── EXPEDITE.md
+...
+└── Website.md
+
+2 directories, 14 files
+
+```
+
+> **Bonus:** I recommend you install the `tree` command. This repo contains aliases for `ld` and `lld` to list 2 or 3 levels (respectively) of directories in a formatted tree. The `pushd` wrapper uses `tree` to display contents, but can default to `ls`.
 
 ## Crypto
 
@@ -90,7 +146,7 @@ A full setup looks like the following, but you should pick and choose.
 
 ```bash
 # see what is missing
-$> source system-chk.sh
+ $> source system-chk.sh
 
 # install aliases and custom prompt
  $> ln -s .dot-profile/.rcd

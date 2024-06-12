@@ -11,47 +11,114 @@ alias lld='tree -dL 3'
 #
 # helpers for dirs/pushd/popd shell built-ins 
 #
-# dst/dir-stack lists the directory stack with indexes
-# nxt (pushd +1) moves to the next directory in the stack
-# prv (pushd -1) moves to the previous directory in the stack
-# pd move to a passed index in the stack, or pushes a directory (saves typing the +/-)
-# load-dirs loads all directories in the current directory into the stack
+
+alias dir-index='dirs -v'
+alias dix=dir-index
+alias pd='dir-stack'
+alias nx=nxt
+alias prv='nxt -1'
+alias pv='nxt -1'
+
 #
-
-alias dir-stack='dirs -v'
-alias dst=dir-stack
-alias prv='pushd -1'
-
-# customize pushd to list the directory contents
+# extend our pushd wrapper to list the directory contents
+# defaults to advance the ring by +1
 nxt() {
-	# advance the stack or push a new directory
-	[ "$#" -eq 0 ] && nxt=+1 || nxt="$1"
-
-	pushd "$nxt" >/dev/null || return 1
+	dir-stack "$@" >/dev/null || return 1
 	echo " -  " $(pwd) " - "
 	if command -v tree >/dev/null 2>&1; then
 		# use tree if it is installed
-		tree -L 1
+		tree -L 1 --dirsfirst
 	else
 		ls -1 --group-directories-first
 	fi
 }
-alias nx=nxt
 
 #
 # wrap pushd so we can pass a stack position without plus or minus
-# and list the resulting stack
-pd() {
-	if [[ "$1" =~ ^[0-9]+$ ]]; then
-		pushd +$1 >/dev/null || return 1
-	else
-		new_path=$(realpath "$1")
-		# if not already in the stack, push it
-		if ! dirs -p -l | grep -q "^$new_path$"; then
-			pushd -n "$new_path" >/dev/null
-		fi
+# prevents adding duplicate dirs to the stack
+# and list the stack with indexes
+#
+# if no args, move to the next directory in the stack
+# if the arg is negative, move back that many directories...
+# rather than the default of using zero-based negative indexes
+# accepts one or more directories to push to the stack
+dir-stack() {
+	# if no args, move to the next directory in the stack
+	if [ "$#" -eq 0 ]; then
+		pushd >/dev/null || return 1
+		dir-index
+		return
 	fi
-	dir-stack
+
+	# if the arg is an index, move to that index
+	# direction is optional and defaults to "+"
+	if [[ "$1" =~ ^[+-]?[0-9]+$ ]]; then
+		prefix=${1:0:1}
+		if [[ "$prefix" =~ ^[+-]$ ]]; then
+			if [[ "$prefix" == "-" ]]; then
+				num=$(( ${1:1} - 1 ))
+
+				pushd "-$num" >/dev/null || return 1
+			else
+				pushd "$1" >/dev/null || return 1
+			fi
+		else
+			pushd "+$1" >/dev/null || return 1
+		fi
+		dir-index
+		return
+	fi
+
+	# if "-c" was passed, clear the stack
+	if [ "$1" == "-c" ]; then 
+		shift 
+		dirs -c
+	fi
+	
+	# create a copy of the arguments and resolve each path
+	# to an absolute path
+	paths=()
+	for arg in "$@"; do
+		paths+=("$(realpath "$arg")")
+	done
+
+	# push each path to the stack
+	for path in "${paths[@]}"; do
+		pushd "$path" >/dev/null || return 1
+	done
+
+	#
+	# remove duplicates from the stack
+	#
+
+	# Get the current directory stack and reverse it
+	stack=$(dirs -p -l | tac)
+	# Clear the original directory stack
+	dirs -c
+	# Initialize an associative array to store unique directories
+	declare -A unique_dirs
+	# Initialize a new stack
+	new_stack=()
+
+	# Process each directory in the reversed stack
+	while read -r dir; do
+		# If the directory is not in the set of unique directories, add it to the set and the new stack
+		if [[ -z "${unique_dirs[$dir]}" ]]; then
+			unique_dirs[$dir]=1
+			new_stack+=("$dir")
+		fi
+	done <<< "$stack"
+
+	# Push the directories from the new stack to the original stack
+	for index in "${!new_stack[@]}"; do
+		dir="${new_stack[$index]}"
+		# if $dir is not current directory, push it
+		if [ "$dir" != "$(pwd)" ]; then
+			pushd -n "$dir" >/dev/null || return 1
+		fi
+	done
+
+	dir-index
 }
 
 #
@@ -60,34 +127,18 @@ pd() {
 # -c will clear the stack before loading
 load-dirs() {
 	if [ "$#" -eq 0 ]; then
-		load-cur-dirs
-	else
-		# if "-c" was passed, clear the stack
-		if [ "$1" == "-c" ]; then 
-			shift 
-			dirs -c
-		fi
-		
-		for dir in "$@"; do
-			new_path=$(realpath "${dir}")
-			# if not already in the stack, push it
-			if ! dirs -p -l | grep -q "^$new_path$"; then
-				pushd -n "$new_path" >/dev/null
-			fi
-		done
-		dir-stack
+		# no args, load current directories
+		dirs -c # clear ring
+		while read -r dirname 
+		do
+			pushd -n "$dirname" >/dev/null
+		done <<< "$(find -L "$(realpath .)"/* -maxdepth 0 -type d)"
+		dir-index
+		return
 	fi
-}
-
-#
-# load all directories in the current directory
-load-cur-dirs() {
-	dirs -c # clear ring
-	while read -r dirname 
-	do
-		pushd -n "$dirname" >/dev/null
-	done <<< "$(find -L "$(realpath .)"/* -maxdepth 0 -type d)"
-	dir-stack
+	
+	# pass the list of directories to dir-stack
+	dir-stack "$@" || return 1
 }
 
 #
