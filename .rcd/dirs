@@ -31,7 +31,11 @@ pd() {
 	if [[ "$1" =~ ^[0-9]+$ ]]; then
 		pushd +$1 >/dev/null || return 1
 	else
-		pushd "$1"
+		new_path=$(realpath "$1")
+		# if not already in the stack, push it
+		if ! dirs -p -l | grep -q "^$new_path$"; then
+			pushd -n "$new_path" >/dev/null
+		fi
 	fi
 	dir-stack
 }
