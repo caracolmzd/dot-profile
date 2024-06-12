@@ -20,9 +20,23 @@ alias lld='tree -dL 3'
 
 alias dir-stack='dirs -v'
 alias dst=dir-stack
-alias nxt='pushd +1'
-alias nx=nxt
 alias prv='pushd -1'
+
+# customize pushd to list the directory contents
+nxt() {
+	# advance the stack or push a new directory
+	[ "$#" -eq 0 ] && nxt=+1 || nxt="$1"
+
+	pushd "$nxt" >/dev/null || return 1
+	echo " -  " $(pwd) " - "
+	if command -v tree >/dev/null 2>&1; then
+		# use tree if it is installed
+		tree -L 1
+	else
+		ls -1 --group-directories-first
+	fi
+}
+alias nx=nxt
 
 #
 # wrap pushd so we can pass a stack position without plus or minus
