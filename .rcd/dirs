@@ -56,17 +56,17 @@ dir-stack() {
 		prefix=${1:0:1}
 		if [[ "$prefix" =~ ^[+-]$ ]]; then
 			if [[ "$prefix" == "-" ]]; then
+				# subtract 1 for more intuitive stack rotation
 				num=$(( ${1:1} - 1 ))
-
 				pushd "-$num" >/dev/null || return 1
 			else
 				pushd "$1" >/dev/null || return 1
 			fi
 		else
+			# if no prefix, default to "+"
 			pushd "+$1" >/dev/null || return 1
 		fi
-		dir-index
-		return
+		dir-index && return
 	fi
 
 	# if "-c" was passed, clear the stack
@@ -109,7 +109,7 @@ dir-stack() {
 		fi
 	done <<< "$stack"
 
-	# Push the directories from the new stack to the original stack
+	# Recreate the stack from the unique directories
 	for index in "${!new_stack[@]}"; do
 		dir="${new_stack[$index]}"
 		# if $dir is not current directory, push it
@@ -123,11 +123,11 @@ dir-stack() {
 
 #
 # load the passed list of directories into the stack, 
-# or default to load-cur-dirs()
+# or default to the child directories of the current directory
 # -c will clear the stack before loading
 load-dirs() {
 	if [ "$#" -eq 0 ]; then
-		# no args, load current directories
+		# no args, load child directories
 		dirs -c # clear ring
 		while read -r dirname 
 		do
