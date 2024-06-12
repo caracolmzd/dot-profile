@@ -47,15 +47,24 @@ s() {
 alias ls='ls -F '${COLOR_AUTO}
 # alias ls='ls -CF '${COLOR_AUTO}
 
-alias l='ls -hl --group-directories-first'
-alias ll='l -A' # (almost) all
+unalias tree l ll2>/dev/null
+
+if [ -x "$(command -v tree)" ]; then
+    # if tree is installed
+    alias tree='tree -C --dirsfirst'
+    alias l='tree -L 1'
+    alias ll='tree -L 2'
+    alias lll='tree -L 3'
+    alias llll='tree -L 4'
+else
+    alias l='ls -hl --group-directories-first'
+fi
+
+alias lls='ls -lA' # (almost) all (exclude . and ..)
 alias la='ls -ltu' # sort by accessed
 alias lt='ls -ltc' # sort by time (modified)
 alias lS='ls -lS' # sort by size
 
-alias lls='tree -L 2'
-alias llls='tree -L 3'
-alias lllls='tree -L 4'
 # NB: see dirs aliases for directory listings
 
 # # #
