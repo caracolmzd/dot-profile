@@ -12,7 +12,10 @@ alias lld='tree -dL 3'
 # helpers for dirs/pushd/popd shell built-ins 
 #
 
-alias dir-index='dirs -v'
+# list the directory stack with indexes
+# and reversed so the current directory is at the bottom
+alias dir-index='dirs -v | tac'
+
 alias dix=dir-index
 alias pd='dir-stack'
 alias nx=nxt

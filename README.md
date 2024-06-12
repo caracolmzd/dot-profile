@@ -38,13 +38,15 @@ I can't believe how many years I went without learning the `pushd/popd` shell bu
 
 See `help` for `pushd`, `popd`, and `dirs` for an introduction to the built-ins. 
 
-TL;DR - Navigate directories by "pushing" onto a stack, or ring. Rotate the ring, or pop-off entries (and change to the new top of the stack).
+TL;DR - Navigate directories by "pushing" onto a stack, or ring. Rotate the ring, or pop-off entries (and change to the new top of the stack). NB: the "top" is index 0, another peculiarity of `pushd`, IMO.
 
 I have drastically customized the builtins to make them more intuitive, to me. In particular, I was confused about using indexes. "Rotating" the stack works intuitively with indexes. Rotating `+1`, makes the entry at index-1 the top of the stack. 
 
-But rotating `-1` broke my brain, because it is a zero-based index, not a number of positions. The `pd` wrapper of `pushd`, *subtracts 1 from reverse-indexes*, so `-1` references the last index in the stack, instead of the second-to-last index. You can also use `nxt` and `prv` as aliases for `pushd +1` and `pushd -0`, respectively. 
+But rotating `-1` broke my brain, because it is a zero-based index, not a number of positions. The `dir-stack` wrapper of `pushd`, ***subtracts 1 from reverse-indexes***, so `-1` references the last index in the stack, instead of the second-to-last index. You can also use `nxt` and `prv` as aliases for `pushd +1` and `pushd -0`, respectively. 
 
-The core wrapper of `pushd` is `dir-stack`, also `pd`, which does:
+The stack is displayed in reverse so the current index is most-near to the new command prompt line. Note that index 0 is the actual "top" of the stack, which is the "current" directory and where new paths are added.
+
+The core wrapper of `pushd` is `dir-stack`, short-form: `pd`, which does:
  * de-dupes the stack and de-references links
  * `-c` clears the stack
  * adds one or more directories to the stack (also works with `-c`)
@@ -75,18 +77,18 @@ A typical use-case, using short-aliases, could be:
 # initialize the stack. (output is same as dir-index/dix)
 # note that ToDo/ is de-referenced to the canonical path
  mzd@penguin: ~> pd Documents Lab/website/ ToDo
- 0  ~/Documents/ToDo/projects/active
- 1  ~/Lab/website
- 2  ~/Documents
  3  ~
-
+ 2  ~/Documents
+ 1  ~/Lab/website
+ 0  ~/Documents/ToDo/projects/active
+ 
 # advance to index 1
 # the new stack state is displayed
 mzd@penguin: ~/Documents/ToDo/projects/active> pd 1
- 0  ~/Lab/website
- 1  ~/Documents
- 2  ~
  3  ~/Documents/ToDo/projects/active
+ 2  ~
+ 1  ~/Documents
+ 0  ~/Lab/website
 
 # go-back. (new dir contents are displayed in a custom format)
 mzd@penguin: ~/website> pv
