@@ -10,7 +10,11 @@ clip() {
 	cat "$@" | tee /dev/tty | xclip -selection c
 }
 
-alias open='xdg-open 2>/dev/null'
+# alias open='xdg-open 2>/dev/null'
+# open in the background
+open() {
+  xdg-open "$@" 2>/dev/null &
+}
 
 gless() {
   FILE="/tmp/$(basename $0).$RANDOM.txt"
