@@ -37,6 +37,7 @@ verbose_print() {
 # List of commands to check for in nowdoc
 depends="
 docker
+fzf
 git
 gpg
 gvim
