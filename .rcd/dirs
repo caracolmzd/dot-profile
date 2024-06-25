@@ -14,7 +14,8 @@ alias lld='tree -dL 3'
 
 # list the directory stack with indexes
 # and reversed so the current directory is at the bottom
-alias dir-index='dirs -v | tac'
+# alias dir-index='dirs -v | tac'
+alias dir-index='dirs -v'
 
 alias dix=dir-index
 alias pd='dir-stack'
