@@ -42,9 +42,9 @@ TL;DR - Navigate directories by "pushing" onto a stack, or ring. Rotate the ring
 
 I have drastically customized the builtins to make them more intuitive, to me. In particular, I was confused about using indexes. "Rotating" the stack works intuitively with indexes. Rotating `+1`, makes the entry at index-1 the top of the stack. 
 
-But rotating `-1` broke my brain, because it is a zero-based index, not a number of positions. The `dir-stack` wrapper of `pushd`, ***subtracts 1 from reverse-indexes***, so `-1` references the last index in the stack, instead of the second-to-last index. You can also use `nxt` and `prv` as aliases for `pushd +1` and `pushd -0`, respectively. 
+But rotating `-1` broke my brain, because it is a zero-based index, not a number of positions. The `dir-stack` wrapper of `pushd`, ***subtracts 1 from reverse-indexes***, so `-1` references the last index in the stack, instead of the second-to-last index. 
 
-The stack is displayed in reverse so the current index is most-near to the new command prompt line. Note that index 0 is the actual "top" of the stack, which is the "current" directory and where new paths are added.
+You can also use `nxt` and `prv` as aliases for `pushd +1` and `pushd -0`, respectively. By default, `pushd` "exchanges the top two directories. The main wrapper preserves this, but `nxt` and `prv` default to rotating the ring by one index. 
 
 The core wrapper of `pushd` is `dir-stack`, short-form: `pd`, which does:
  * de-dupes the stack and de-references links
@@ -57,7 +57,7 @@ The core wrapper of `pushd` is `dir-stack`, short-form: `pd`, which does:
 
 All of the commands are wrappers for the `dir-stack` command, but alter the output and default arguments.
 
-Instead of outputting the current stack, `nxt` and `prv` output the contents of the new directory.
+Instead of outputting the current stack, `cd`, `nxt` and `prv` output the contents of the new directory.
 
 Instead of defaulting to advancing one, `load-dirs` loads all of the directories in the current directory.
 
@@ -69,6 +69,7 @@ Instead of defaulting to advancing one, `load-dirs` loads all of the directories
 * `prv`/`pv` reverse the stack and display contents
 * `load-dirs` defaults to adding all of the directories in the current directory (and clearing the previous stack).
 * `popd` is still used to remove the top of the stack
+* `change-dir`/`cd` another variant wrapper to mimic somewhat the regular `cd` command. Updates the stack, instead of always adding new entries when changing to a parent or child directory. Supports the special argument, "-", and defaults to `$HOME` with no args. 
 
 #### Example 
 A typical use-case, using short-aliases, could be:
@@ -77,19 +78,19 @@ A typical use-case, using short-aliases, could be:
 # initialize the stack. (output is same as dir-index/dix)
 # note that ToDo/ is de-referenced to the canonical path
  mzd@penguin: ~> pd Documents Lab/website/ ToDo
- 3  ~
- 2  ~/Documents
- 1  ~/Lab/website
  0  ~/Documents/ToDo/projects/active
+ 1  ~/Lab/website
+ 2  ~/Documents
+ 3  ~
  
 # advance to index 1
 # the new stack state is displayed
 mzd@penguin: ~/Documents/ToDo/projects/active> pd 1
- 3  ~/Documents/ToDo/projects/active
- 2  ~
- 1  ~/Documents
  0  ~/Lab/website
-
+ 1  ~/Documents
+ 2  ~
+ 3  ~/Documents/ToDo/projects/active
+ 
 # go-back. (new dir contents are displayed in a custom format)
 mzd@penguin: ~/website> pv
  -   /home/mzd/Documents/ToDo/projects/active  - 

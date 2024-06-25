@@ -22,18 +22,31 @@ alias nx=nxt
 alias prv='nxt -1'
 alias pv='nxt -1'
 
-#
-# extend our pushd wrapper to list the directory contents
-# defaults to advance the ring by +1
-nxt() {
-	dir-stack "$@" >/dev/null || return 1
-	echo " -  " $(pwd) " - "
+# list the contents of the current directory
+dir-contents() {
+	echo " -  $(pwd) - "
+	
 	if command -v tree >/dev/null 2>&1; then
 		# use tree if it is installed
 		tree -L 1 --dirsfirst
 	else
 		ls -1 --group-directories-first
 	fi
+}
+
+# change the default switching behavior of the pushd command.
+# By default, pushd pushes index 1 to the top of the stack.
+# Instead, we default to +1, so the ring is rotated.
+# With arguments, is just a wrapper for our pushd wrapper.
+# Suppresses output of the stack and instead lists contents.
+nxt() {
+	# if no args, move to the next directory in the stack
+	if [ "$#" -eq 0 ]; then
+		dir-stack +1 >/dev/null || return 1
+	else
+		dir-stack "$@" >/dev/null || return 1
+	fi
+	dir-contents
 }
 
 #
@@ -123,6 +136,55 @@ dir-stack() {
 
 	dir-index
 }
+
+# Change directory and update the stack
+# a `cd` replacement
+# if changing to a parent or child, update, instead of adding
+change-dir() {
+
+	# if no args, change to $HOME
+	if [ "$#" -eq 0 ]; then
+		dir-stack "$HOME" >/dev/null || return 1
+		return
+	fi
+
+	# support "-" as an alias for the previous directory
+	if [ "$1" == "-" ]; then
+		dir-stack -1 >/dev/null || return 1
+		return
+	fi
+
+	# push the new directory to the stack
+	dir-stack "$1" >/dev/null || return 1
+	
+	# get the real path of the current directory
+	current_dir=$(realpath .)
+	# get the real path of the previous directory
+	previous_dir=$(dirs -l -p +1)
+
+	# Initialize do_pop flag as false
+	do_pop=false
+
+	# Check if the previous directory is the parent of the current directory
+	if [[ "$current_dir" == "$previous_dir"/* ]]; then
+		do_pop=true
+	# Check if the current directory is the parent of the previous directory
+	elif [[ "$previous_dir" == "$current_dir"/* ]]; then
+		do_pop=true
+	fi
+
+	if [[ "$do_pop" == true ]]; then
+		# but first, check the length of the stack
+		# if it is only 2, we don't want to remove the previous directory
+		if [ "$(dirs -l -p | wc -l)" -gt 2 ]; then
+			popd -n +1 >/dev/null || return 1
+		fi
+	fi
+	# print the contents
+	dir-contents
+}
+
+alias cd=change-dir
 
 #
 # load the passed list of directories into the stack, 
