@@ -35,6 +35,12 @@ alias dklp="docker ps --format 'table {{if .ID}}{{slice .ID 0 4}}{{end}}\t{{.Nam
 # 7a65      website-httpd-1         0.0.0.0:80->80/tcp, :::80->80/tcp
 # b6a0      website-tailwindcss-1   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
 
+# purge unused resources, including build caches
+dkfree() {
+	docker system prune --volumes --force
+	docker builder prune --force
+}
+
 # AWS
 
 alias ecr-token='aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/s0z8p6k7'
