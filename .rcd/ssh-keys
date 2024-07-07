@@ -21,6 +21,9 @@ ssh-key-fingerprint() {
 # find key location by fingerprint
 # find_key <fingerprint>
 ssh-key-find() {
+    echo 'allowed formats: md5, sha256'
+    echo 'FP_FORMAT: ' $FP_FORMAT
+    echo 'SSH_KEY_PATH: ' $SSH_KEY_PATH
     local keys
     keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
     for k in $keys; do
@@ -33,7 +36,11 @@ ssh-key-find() {
 }
 
 # list ssh keys with fingerprints
-ssh-keys-list() {
+ssh-key-list() {
+    echo 'allowed formats: md5, sha256'
+    echo 'FP_FORMAT: ' $FP_FORMAT
+    echo 'SSH_KEY_PATH: ' $SSH_KEY_PATH
+
     local keys
     keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
     for k in $keys; do
