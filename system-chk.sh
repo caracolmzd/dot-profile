@@ -36,12 +36,13 @@ verbose_print() {
 # 
 # List of commands to check for in nowdoc
 depends="
+complete
 docker
 fzf
 git
 gpg
-gvim
 curl
+make
 nano
 pushd
 ssh
