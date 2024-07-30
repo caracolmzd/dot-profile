@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# if ~/.kube dir exists, set KUBECONFIG
+if [ -d "${HOME}/.kube" ]; then
+	export KUBECONFIG
+# if the active.yaml file exists, use it
+	if [ -f "${HOME}/.kube/active" ]; then
+# check if it is a symlink and de-reference it
+		if [ -L "${HOME}/.kube/active" ]; then
+  		KUBECONFIG=$(readlink ${HOME}/.kube/active)
+		else
+  		KUBECONFIG=${HOME}/.kube/active
+		fi
+# else, if config exists, use it
+	elif [ -f "${HOME}/.kube/config" ]; then
+  		KUBECONFIG=${HOME}/.kube/config
+# use find to see if more than one file exists, use the last modified
+	elif [ $(ls -1 ${HOME}/.kube/*.yaml 2>/dev/null | wc -l) -gt 1 ]; then
+		KUBECONFIG=$(ls -1t ${HOME}/.kube/*.yaml | head -1)
+	fi
+fi
+
+
+# Docker
+
+alias dk=docker
+alias dkc='docker compose'
+alias dki='docker image'
+
+# always remove run containers
+alias dkr='docker run --rm'
+
+# Remove all stopped containers
+alias dkp='docker container prune'
+
+# custom format; see Go Templates for reference
+alias dkl='docker ps --format '\''table {{if .ID}}{{slice .ID 0 4}}{{end}}\t{{.Names}}\t{{if .Status}}{{slice .Status 0 2}}{{end}}\t{{.Image}}\t{{.Command}}'\'
+# CONT      NAMES                   ST        IMAGE                            COMMAND
+# e7b7      website-imagick-1       Ex        dpokidov/imagemagick             "convert"
+
+# no truncate RUN CMD
+alias dkll='dkl --no-trunc'
+
+# display port mappings
+alias dklp="docker ps --format 'table {{if .ID}}{{slice .ID 0 4}}{{end}}\t{{.Names}}\t{{.Ports}}'"
+# CONT      NAMES                   PORTS
+# 7a65      website-httpd-1         0.0.0.0:80->80/tcp, :::80->80/tcp
+# b6a0      website-tailwindcss-1   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
+
+# purge unused resources, including build caches
+dkfree() {
+	docker system prune --volumes --force
+	docker builder prune --force
+}
+
+dk-login() {
+# return error message if not set, CI_REGISTRY, CI_REGISTRY_USER, CI_REGISTRY_PASSWORD
+	if [ -z ${CI_REGISTRY+x} ]; then
+		echo "CI_REGISTRY is not set"
+		return 1
+	fi
+	if [ -z ${CI_REGISTRY_USER+x} ]; then
+		echo "CI_REGISTRY_USER is not set"
+		return 1
+	fi
+	if [ -z ${CI_REGISTRY_PASSWORD+x} ]; then
+		echo "CI_REGISTRY_PASSWORD is not set"
+		return 1
+	fi
+	docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+}
+
+# AWS
+
+alias ecr-token='aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/s0z8p6k7'
+alias cplt=copilot
+
+# Linode
+
+alias lin-util='linode-cli'
+alias lin='linode-cli linodes'
+
