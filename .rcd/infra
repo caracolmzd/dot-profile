@@ -11,7 +11,7 @@ if [ -d "${HOME}/.kube" ]; then
 	if [ -f "${HOME}/.kube/active" ]; then
 # check if it is a symlink and de-reference it
 		if [ -L "${HOME}/.kube/active" ]; then
-  		KUBECONFIG=$(readlink ${HOME}/.kube/active)
+  		KUBECONFIG=$(readlink -f ${HOME}/.kube/active)
 		else
   		KUBECONFIG=${HOME}/.kube/active
 		fi
