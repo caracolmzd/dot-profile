@@ -10,6 +10,16 @@ AddKeysToAgent yes
 
 IdentityFile ~/.ssh/github_apr_21
 
+host cyberpower
+	Hostname cyberpower.elect.info
+	User mzd
+	IdentityFile ~/.ssh/id_rsa_2020
+
+host cyberpower-vpn
+	Hostname 10.10.0.100
+	User mzd
+	IdentityFile ~/.ssh/id_rsa_2020
+
 host github
 	HostName github.com
 	User git
