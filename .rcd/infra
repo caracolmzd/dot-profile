@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# k8s
+
+alias kc=kubectl
+
 # if ~/.kube dir exists, set KUBECONFIG
 if [ -d "${HOME}/.kube" ]; then
 	export KUBECONFIG
