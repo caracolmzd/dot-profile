@@ -50,6 +50,7 @@ ssh
 ssh-keygen
 tree
 vim
+w3m
 wget
 xclip
 xdg-open
