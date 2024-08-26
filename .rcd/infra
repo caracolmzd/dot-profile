@@ -74,6 +74,10 @@ dk-login() {
 	docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
 }
 
+dk-rm-all-but-latest() {
+	docker images | grep $1 | grep -v 'latest' | awk '{print $3}' | xargs docker rmi
+}
+
 # AWS
 
 alias ecr-token='aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/s0z8p6k7'
