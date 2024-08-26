@@ -138,11 +138,9 @@ else
 	echo "[x] ~/.vimrc does not exist."
 fi
 
-# if verbose, if git is installed, display the global git configuration.
-if [ "$verbose" = true ]; then
-	if command -v git > /dev/null; then
-		echo ""
-		echo " - Git global configuration: -"
-		git config --list --global
-	fi
+if command -v git > /dev/null; then
+	verbose_print ""
+	verbose_print " - Git global configuration: -"
+	GIT_CONFIG_LIST=$(git config --list --global)
+	verbose_print "$GIT_CONFIG_LIST"
 fi
