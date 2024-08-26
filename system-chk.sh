@@ -44,6 +44,7 @@ gpg
 curl
 make
 nano
+pandoc
 pushd
 ssh
 ssh-keygen
