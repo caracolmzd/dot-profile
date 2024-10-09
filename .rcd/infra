@@ -33,6 +33,7 @@ alias dki='docker image'
 
 # always remove run containers
 alias dkr='docker run --rm'
+alias dkcr='docker compose run --rm'
 
 # Remove all stopped containers
 alias dkp='docker container prune'
