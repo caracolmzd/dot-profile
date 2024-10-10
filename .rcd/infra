@@ -43,6 +43,7 @@ alias dkl='docker ps --format '\''table {{if .ID}}{{slice .ID 0 4}}{{end}}\t{{.N
 # CONT      NAMES                   ST        IMAGE                            COMMAND
 # e7b7      website-imagick-1       Ex        dpokidov/imagemagick             "convert"
 
+alias dkla='dkl --all'
 # no truncate RUN CMD
 alias dkll='dkl --no-trunc'
 
