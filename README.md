@@ -135,7 +135,7 @@ It will recommend and point you to the functions to configure commit signing (cr
 
 ## Docker Aliases
 
-I'm quite fond of these. See them in the `.rcd/devtools` file. Most start with "dk".
+I'm quite fond of these. See them in the `.rcd/infra` file. Most start with "dk".
 
 # Setup
 
