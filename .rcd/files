@@ -58,9 +58,11 @@ if [ -x "$(command -v tree)" ]; then
     alias llll='tree -L 4'
 else
     alias l='ls -hl --group-directories-first'
+    alias ll='l -1A'
 fi
 
 alias lls='ls -lA' # (almost) all (exclude . and ..)
+alias lA='ls -1A' # (almost) all single column
 alias la='ls -ltu' # sort by accessed
 alias lt='ls -ltc' # sort by time (modified)
 alias lS='ls -lS' # sort by size
