@@ -95,15 +95,26 @@ else
 	echo "[x] bash_completions is not installed."
 fi
 
-# check if ~/.rcd exists and is a link.
-if [ -d ~/.rcd ]; then
-	if [ -L ~/.rcd ]; then
-		echo "~/.rcd is a link -> " $(readlink -f ~/.rcd)
+# check if ~/.rc.d exists and is a link.
+if [ -d ~/.rc.d ]; then
+	if [ -L ~/.rc.d ]; then
+		echo "~/.rc.d is a link -> " $(readlink -f ~/.rc.d)
 	else
-		echo "[x] ~/.rcd is not a link."
+		echo "[x] ~/.rc.d is not a link."
 	fi
 else
-	echo "[x] ~/.rcd does not exist."
+	echo "[x] ~/.rc.d does not exist."
+fi
+
+# check if ~/.env.d exists and is a link.
+if [ -d ~/.env.d ]; then
+	if [ -L ~/.env.d ]; then
+		echo "~/.env.d is a link -> " $(readlink -f ~/.env.d)
+	else
+		echo "[x] ~/.env.d is not a link."
+	fi
+else
+	echo "[x] ~/.env.d does not exist."
 fi
 
 # check if ~.ssh/config exists and is a link.

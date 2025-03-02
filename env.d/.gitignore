@@ -1,0 +1,4 @@
+# require force-adding files so you think-twice before adding sensitive configs (credentials!).
+**
+# ignore all, except tpl files
+!*tpl

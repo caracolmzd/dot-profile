@@ -137,6 +137,22 @@ if ! shopt -oq posix; then
 fi
 
 #
+# Environment variables
+if [ -d ~/.env.d ]; then
+    for file in ~/.env.d/*
+        do
+            # Check if the file is a regular file (not a directory)
+            if [ -f "$file" ]; then
+                # Source the file to load the environment variables
+                . "$file"
+
+                # Export the variables
+                export $(awk -F'=' '{print $1}' "$file")
+            fi
+        done
+fi  
+
+#
 # Auto-load shell resource files from .rcd
 if [ -d ~/.rcd ]; then
 	for f in ~/.rcd/*

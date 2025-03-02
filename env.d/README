@@ -1,0 +1,11 @@
+# Environment .d
+
+> auto-include and export variables
+
+Contents of this directory are auto-included in the `.bashrc` and auto-exported. Place files here to configure your shell environment.
+
+## git-ignored
+
+This directory is git-ignored so that you hopefully think-twice before committing any credentials or other sensitive information.
+
+It is recommended to commit templates and then add your sensitive values locally.

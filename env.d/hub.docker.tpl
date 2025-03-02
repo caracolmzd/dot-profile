@@ -1,0 +1,3 @@
+CI_REGISTRY=docker.io
+CI_REGISTRY_USER=caracolazul
+CI_REGISTRY_PASSWORD=
