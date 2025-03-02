@@ -10,6 +10,11 @@ AddKeysToAgent yes
 
 IdentityFile ~/.ssh/github_apr_21
 
+host hadhayush
+	Hostname 192.168.1.16
+	User mzd
+	IdentityFile ~/.ssh/id_rsa_2020
+
 host egurian.dev
 	Hostname eguriandev.tmitech.co
 	User root
