@@ -163,8 +163,8 @@ fi
 
 #
 # Auto-load shell resource files from .rcd
-if [ -d ~/.rcd ]; then
-	for f in ~/.rcd/*
+if [ -d ~/.rc.d ]; then
+	for f in ~/.rc.d/*
 	do
 		if [ -f "$f" ]; then
 			. "$f"
