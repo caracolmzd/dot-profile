@@ -141,13 +141,22 @@ fi
 if [ -d ~/.env.d ]; then
     for file in ~/.env.d/*
         do
+            # ignore .tpl files and README and dot-files
+            name=$(basename "$file")
+            if [[ "$name" == *.tpl ]] \
+                || [[ "$name" == *README ]] \
+                || [[ "$name" == .* ]]
+            then
+                continue
+            fi
+
             # Check if the file is a regular file (not a directory)
             if [ -f "$file" ]; then
                 # Source the file to load the environment variables
                 . "$file"
 
                 # Export the variables
-                export $(awk -F'=' '{print $1}' "$file")
+                export $(   awk -F'=' '{print $1}' "$file") &>/dev/null
             fi
         done
 fi  
