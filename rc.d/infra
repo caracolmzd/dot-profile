@@ -28,6 +28,11 @@ fi
 # Docker
 #
 
+# check if podman is installed and alias docker to podman
+if command -v podman &> /dev/null; then
+	alias docker=podman
+fi
+
 alias dk=docker
 alias dkc='docker compose'
 alias dki='docker image'
