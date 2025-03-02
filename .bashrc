@@ -156,7 +156,7 @@ if [ -d ~/.env.d ]; then
                 . "$file"
 
                 # Export the variables
-                export $(   awk -F'=' '{print $1}' "$file") &>/dev/null
+                export $(awk -F'=' '{print $1}' "$file") &>/dev/null
             fi
         done
 fi  
