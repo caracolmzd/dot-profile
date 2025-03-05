@@ -1,48 +1,43 @@
-SendEnv LANG LC_*
-HashKnownHosts yes
-TCPKeepAlive yes
-ServerAliveInterval 20
-ServerAliveCountMax 6
-AddKeysToAgent yes
-# ForwardAgent yes
-#PubkeyAuthentication no
-#PasswordAuthentication yes
 
-IdentityFile ~/.ssh/github_apr_21
 
-host hadhayush
+Host gso
+	Hostname 40.84.56.53
+	User michael
+	IdentityFile ~/.ssh/id_rsa_2020
+
+Host hadhayush
 	Hostname 192.168.1.16
 	User mzd
 	IdentityFile ~/.ssh/id_rsa_2020
 
-host egurian.dev
+Host egurian.dev
 	Hostname eguriandev.tmitech.co
 	User root
 	IdentityFile ~/.ssh/id_rsa_2020
 
-host cyberpower
+Host cyberpower
 	Hostname cyberpower.elect.info
 	User mzd
 	IdentityFile ~/.ssh/id_rsa_2020
 
-host cyberpower-vpn
+Host cyberpower-vpn
 	Hostname 10.10.0.100
 	User mzd
 	IdentityFile ~/.ssh/id_rsa_2020
 
-host github
+Host github
 	HostName github.com
 	User git
 	IdentityFile ~/.ssh/github_apr_21
 
-host nadcp
+Host nadcp
 	HostName 3.227.133.187
 	Port 22
 	User ubuntu
 	ForwardAgent yes
 	IdentityFile ~/.ssh/nadcp-aws-rsa
 
-host nadcp-prod
+Host nadcp-prod
 	HostName 3.216.176.123
 	Port 22
 	User ubuntu
@@ -56,26 +51,28 @@ Host ark.nadcp
 	IdentityFile ~/.ssh/nadcp-aws-rsa
 	ForwardAgent yes
 
-host varl-prod
-	HostName 45.79.193.123
-	Port 32121
-	User mzd
-	IdentityFile ~/.ssh/mzd_ginkgo_14_rsa
-
-host conf-portals
+Host conf-portals
 	HostName 18.117.115.70
 	User ubuntu
 	IdentityFile ~/.ssh/id_rsa_2020
 
-host conf-portals-prod
+Host conf-portals-prod
 	HostName 18.216.239.58
 	User ubuntu
 	IdentityFile ~/.ssh/id_rsa_2020
 
-host varl
-	HostName 45.79.193.123
-	Port 32121
-	User mzd
-	IdentityFile ~/.ssh/mzd_ginkgo_14_rsa
 
+# Defaults
+# NB: configs can only be set once, so defaults must come last.
+Host *
+SendEnv LANG LC_*
+	HashKnownHosts yes
+	TCPKeepAlive yes
+	ServerAliveInterval 20
+	ServerAliveCountMax 6
+	AddKeysToAgent yes
+	ForwardAgent no
+  	# PubkeyAuthentication no
+	# PasswordAuthentication yes
+	IdentityFile ~/.ssh/id_rsa_2020
 
