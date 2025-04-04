@@ -1,4 +1,10 @@
 
+Host mowo
+	Hostname prrachousingmo.sftp.wpengine.com
+	Port 2222
+	User prrachousingmo-mzd
+	PasswordAuthentication yes
+
 
 Host gso
 	Hostname 40.84.56.53
@@ -7,7 +13,8 @@ Host gso
 
 Host hadhayush
 	Hostname 192.168.1.16
-	User mzd
+	#User mzd
+	User admin
 	IdentityFile ~/.ssh/id_rsa_2020
 
 Host egurian.dev
