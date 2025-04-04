@@ -58,7 +58,7 @@ alias dkla='dkl --all'
 alias dkll='dkl --no-trunc'
 
 # display port mappings
-alias dkl-ports="docker ps --format 'table {{if .ID}}{{slice .ID 0 4}}{{end}}\t{{.Names}}\t{{.Ports}}'"
+alias dkl-ports="docker ps --format 'table {{if .ID}}{{slice .ID 0 4}}{{end}}\t{{.Names}}\t{{.Networks}}\t{{.Ports}}'"
 # CONT      NAMES                   PORTS
 # 7a65      website-httpd-1         0.0.0.0:80->80/tcp, :::80->80/tcp
 # b6a0      website-tailwindcss-1   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp
