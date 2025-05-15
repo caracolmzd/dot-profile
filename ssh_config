@@ -1,10 +1,14 @@
 
-Host mowo
+Host mowo-sftp
 	Hostname prrachousingmo.sftp.wpengine.com
 	Port 2222
 	User prrachousingmo-mzd
 	PasswordAuthentication yes
 
+Host mowo-shell
+	Hostname prrachousingmo.ssh.wpengine.net
+	User prrachousingmo
+	IdentityFile ~/.ssh/wpengine-caracolazul
 
 Host gso
 	Hostname 40.84.56.53
@@ -15,6 +19,11 @@ Host hadhayush
 	Hostname 192.168.1.16
 	#User mzd
 	User admin
+	IdentityFile ~/.ssh/id_rsa_2020
+
+Host tahini
+	Hostname 192.168.1.18
+	User mzd
 	IdentityFile ~/.ssh/id_rsa_2020
 
 Host egurian.dev
