@@ -1,0 +1,42 @@
+
+Host github.com
+	User git
+	IdentityFile ~/.ssh/github-auth-aflcio-jul-2025
+
+# Using defaults, just listing for tab-completion
+#
+Host cron-32
+	# no access
+	# used?
+
+Host cron-33
+	
+Host flogic-32
+	
+Host mu2
+	
+Host psql-31
+	# no access
+	# used? - "Experimentation with Postgresql"
+
+Host sts-33
+	
+Host tableau-proxy-31
+	# AKA dash
+	
+Host trfr-31
+
+# Defaults
+# NB: configs can only be set once, so defaults must come last.
+Host *
+	User mzd
+	SendEnv LANG LC_*
+        HashKnownHosts yes
+        TCPKeepAlive yes
+        ServerAliveInterval 20
+        ServerAliveCountMax 6
+        AddKeysToAgent yes
+        ForwardAgent no
+	IdentityFile ~/.ssh/id_rsa_aflcio
+	# PubkeyAuthentication no
+        # PasswordAuthentication yes
