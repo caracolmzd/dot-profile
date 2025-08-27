@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# list configured hosts
+alias ssh-hosts='awk "/^Host / {print \$2}" ~/.ssh/config'
+
+
 #
 # utils for ssh keys using fingerprints
 #
