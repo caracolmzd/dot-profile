@@ -15,14 +15,13 @@ ssh-key-fingerprint() {
     local key=$1
     local fp
     fp=$(ssh-keygen -l -E ${FP_FORMAT} -f $key)
-    printf "%30s\t ${fp}\n" $key
+    printf "%50s\t ${fp}\n" $key
 }
 
 # find key location by fingerprint
 # find_key <fingerprint>
 ssh-key-find() {
-    echo 'allowed formats: md5, sha256'
-    echo 'FP_FORMAT: ' $FP_FORMAT
+    echo 'FP_FORMAT: ' $FP_FORMAT ' # allowed formats: md5, sha256'
     echo 'SSH_KEY_PATH: ' $SSH_KEY_PATH
     local keys
     keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
@@ -37,9 +36,9 @@ ssh-key-find() {
 
 # list ssh keys with fingerprints
 ssh-key-list() {
-    echo 'allowed formats: md5, sha256'
-    echo 'FP_FORMAT: ' $FP_FORMAT
+    echo 'FP_FORMAT: ' $FP_FORMAT ' # allowed formats: md5, sha256'
     echo 'SSH_KEY_PATH: ' $SSH_KEY_PATH
+    echo 
 
     local keys
     keys=$(find ${SSH_KEY_PATH} -maxdepth 1 -name '*.pub' -exec basename -s .pub {} \;)
