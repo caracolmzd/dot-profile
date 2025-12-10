@@ -141,25 +141,25 @@ I'm quite fond of these. See them in the `.rcd/infra` file. Most start with "dk"
 
 I have not tried deploying the `.bashrc` file contents to Zsh, let me know how it goes! 
 
-Clone this repo to `~/.dot-profile` (or whatever you want).
+Clone this repo to `~/.profile.d` (or whatever you want).
 
-You can look for dependencies and recommendations with the included `./system-chk.sh` script. If you run it with verbose (`-v`) it will print positive confirmation in addition to checks that fail. You may decide whether to resolve the failed checks or not.
+You can look for dependencies and recommendations with the included `./lib/system-chk.sh` script. If you run it with verbose (`-v`) it will print positive confirmation in addition to checks that fail. You may decide whether to resolve the failed checks or not.
 
 A full setup looks like the following, but you should pick and choose.
 
 ```bash
 # see what is missing
- $> source system-chk.sh
+ $> source .profile.d/lib/system-chk.sh
 
 # install aliases and custom prompt
- $> ln -s .dot-profile/.rcd
- $> ln -s .dot-profile/.bashrc
+ $> ln -s .profile.d/.rcd
+ $> ln -s .profile.d/.bashrc
 
 # use ssh config
- $> ln -s .dot-profile/ssh_config ~/.ssh/config
+ $> ln -s .profile.d/ssh_config ~/.ssh/config
 
 # configure git with prompts
- $> .dot-profile/configure-git.sh
+ $> .profile.d/lib/configure-git.sh
 
 # generate a new signing key
  $> gpg-generate-signing-key USER_NAME='Tenex Dev' EMAIL=you@domain.com
