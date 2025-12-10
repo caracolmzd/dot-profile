@@ -42,6 +42,7 @@ fzf
 git
 gpg
 curl
+keychain
 make
 nano
 pandoc

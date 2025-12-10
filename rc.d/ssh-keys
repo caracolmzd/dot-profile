@@ -50,3 +50,43 @@ ssh-key-list() {
         ssh-key-fingerprint ${SSH_KEY_PATH}/$k
     done
 }
+
+#
+# SSH agent management using keychain
+#
+
+# Start SSH agent using keychain (only if not already running)
+ssh-agent-start() {
+    if ! command -v keychain >/dev/null 2>&1; then
+        echo "Warning: keychain command not found. Please install keychain to use this function."
+        return 1
+    fi
+    if [ -z "$SSH_AGENT_PID" ] || ! kill -0 $SSH_AGENT_PID 2>/dev/null; then
+        eval $(keychain --eval --agents ssh --quiet)
+        echo "SSH agent started."
+    else
+        echo "SSH agent already running (PID: $SSH_AGENT_PID)"
+    fi
+}
+
+# Check if SSH agent is running
+ssh-agent-check() {
+    if [ -n "$SSH_AGENT_PID" ] && kill -0 $SSH_AGENT_PID 2>/dev/null; then
+        echo "SSH agent is running (PID: $SSH_AGENT_PID)"
+        echo "SSH agent has keys:"
+        ssh-add -l
+    else
+        echo "SSH agent is not running"
+    fi
+}
+
+# Stop the SSH agent
+ssh-agent-stop() {
+    if [ -n "$SSH_AGENT_PID" ] && kill -0 $SSH_AGENT_PID 2>/dev/null; then
+        kill $SSH_AGENT_PID
+        echo "SSH agent stopped."
+        unset SSH_AGENT_PID SSH_AUTH_SOCK
+    else
+        echo "SSH agent is not running"
+    fi
+}
