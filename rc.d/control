@@ -22,3 +22,10 @@ killskype()
 restart-gnome() {
   busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting…")'
 }
+
+# for connecting WSL2 to windows X server
+set-x11-display() {
+  # Inside your WSL terminal
+  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+
+}
