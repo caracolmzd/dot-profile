@@ -161,6 +161,14 @@ if [ -d ~/.env.d ]; then
         done
 fi  
 
+# Add ~/.local/bin to PATH if it exists and isn't already present
+if [ -d "$HOME/.local/bin" ]; then
+    case ":$PATH:" in
+        *":$HOME/.local/bin:"*) ;;
+        *) PATH="$HOME/.local/bin:$PATH"; export PATH ;;
+    esac
+fi
+
 #
 # Auto-load shell resource files from .rcd
 if [ -d ~/.rc.d ]; then
