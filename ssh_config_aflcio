@@ -5,26 +5,51 @@ Host github.com
 
 # Using defaults, just listing for tab-completion
 #
-Host cron-32
-	# no access
-	# used?
-
-Host cron-33
+Host cron
+	HostName cron-33
+	ForwardAgent yes
 	
-Host flogic-32
+Host eng
+	HostName eng-31
+	ForwardAgent yes
 	
-Host mu2
+Host flogic
+	HostName flogic-32
+	ForwardAgent yes
 	
 Host psql-31
-	# no access
+	# no access?
 	# used? - "Experimentation with Postgresql"
 
-Host sts-33
-	
-Host tableau-proxy-31
-	# AKA dash
-	
-Host trfr-31
+Host sts
+	HostName sts-33
+	ForwardAgent yes
+
+Host prefect
+	# HostName prefect-01.h1.aflcio.org
+	ForwardAgent yes
+	#LocalForward 8200 localhost:4200
+
+Host dash
+	# AKA tableau-proxy-31
+	# Not DMZ?
+
+Host cf-tunnel
+	#HostName 10.5.2.13
+
+#
+# DMZ
+#
+
+Host mu
+	HostName mu2.aflcio.org
+
+Host cron-dmz
+	HostName cron-32.aflcio.org
+
+Host trfr
+	HostName trfr-31
+
 
 # Defaults
 # NB: configs can only be set once, so defaults must come last.
