@@ -66,7 +66,7 @@ gpg-generate-signing-key() {
         return 1
     fi
 
-    gpg --batch --passphrase '' --quick-generate-key "$USER_NAME <$EMAIL>" rsa4096 sign never
+    gpg --batch --passphrase '' --quick-generate-key "$USER_NAME <$EMAIL>" rsa4096 sign 1y
 	echo "Use 'gpg-export-key KEY_ID=<key-id> OUTPUT=<output-file>' to export the key."
 }
 
