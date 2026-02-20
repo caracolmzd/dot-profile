@@ -26,7 +26,8 @@ Host sts
 	ForwardAgent yes
 
 Host prefect
-	HostName prefect-01.h1.aflcio.org
+	HostName 10.5.2.4
+	HostName prefect-01.hq.aflcio.org
 	ForwardAgent yes
 	#LocalForward 8200 localhost:4200
 
