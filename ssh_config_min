@@ -1,0 +1,16 @@
+
+Host github.com
+	User git
+
+# Defaults
+# NB: configs can only be set once, so defaults must come last.
+Host *
+	User mzd
+	SendEnv LANG LC_*
+	HashKnownHosts yes
+	TCPKeepAlive yes
+	ServerAliveInterval 20
+	ServerAliveCountMax 6
+	ForwardAgent no
+	# PubkeyAuthentication no
+	# PasswordAuthentication yes

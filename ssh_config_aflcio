@@ -26,7 +26,7 @@ Host sts
 	ForwardAgent yes
 
 Host prefect
-	# HostName prefect-01.h1.aflcio.org
+	HostName prefect-01.h1.aflcio.org
 	ForwardAgent yes
 	#LocalForward 8200 localhost:4200
 
@@ -56,12 +56,12 @@ Host trfr
 Host *
 	User mzd
 	SendEnv LANG LC_*
-        HashKnownHosts yes
-        TCPKeepAlive yes
-        ServerAliveInterval 20
-        ServerAliveCountMax 6
-        AddKeysToAgent yes
-        ForwardAgent no
+	HashKnownHosts yes
+	TCPKeepAlive yes
+	ServerAliveInterval 20
+	ServerAliveCountMax 6
+	AddKeysToAgent yes
+	ForwardAgent no
 	IdentityFile ~/.ssh/id_rsa_aflcio
 	# PubkeyAuthentication no
-        # PasswordAuthentication yes
+	# PasswordAuthentication yes
