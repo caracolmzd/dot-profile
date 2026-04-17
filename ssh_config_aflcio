@@ -9,6 +9,7 @@ Host github.com
 #
 Host cron
 	HostName cron-33
+	User runner
 	ForwardAgent yes
 	
 Host eng
@@ -18,7 +19,8 @@ Host eng
 Host flogic
 	HostName flogic-32
 	ForwardAgent yes
-	
+	IdentityFile ~/.ssh/id_rsa_ansible
+
 Host psql-31
 	# no access?
 	# used? - "Experimentation with Postgresql"
@@ -51,8 +53,61 @@ Host cron-dmz
 	HostName cron-32.aflcio.org
 
 Host trfr
-	HostName trfr-31
+	HostName trfr.aflcio.org
 
+Host dmz-proxy
+	HostName 172.16.0.10
+	# HostName dmz-app-gw-01
+
+# 
+# Oracle Cloud
+#
+
+Host portal5-su
+	Hostname portal5.aflcio.org
+	ProxyJump flogic
+	User opc
+	IdentityFile ~/.ssh/id_rsa_ansible
+
+Host portal5
+        Hostname portal5.aflcio.org
+	ProxyJump flogic
+	User oracle
+        IdentityFile ~/.ssh/oracle_cloud_id
+
+Host portal6-su
+        Hostname portal6.aflcio.org
+	ProxyJump flogic
+        User opc
+        IdentityFile ~/.ssh/id_rsa_ansible
+
+Host portal6
+        Hostname portal6.aflcio.org
+	ProxyJump flogic
+        User oracle
+        IdentityFile ~/.ssh/oracle_cloud_id
+
+#
+# AWS (DAIR)
+#
+
+Host samba
+	Hostname samba.hq.aflcio.org
+	# Hostname 172.31.102.134
+	# User ubuntu
+	IdentityFile ~/.ssh/dair_analytics_admin_rsa
+
+Host roses
+	Hostname roses.hq.aflcio.org
+	# Hostname 172.31.107.138
+	User ubuntu
+	IdentityFile ~/.ssh/dair_analytics_admin_rsa
+
+Host bread
+	Hostname bread.hq.aflcio.org
+	# Hostname 172.31.104.61
+	User ubuntu
+	IdentityFile ~/.ssh/dair_analytics_admin_rsa
 
 # Defaults
 # NB: configs can only be set once, so defaults must come last.
