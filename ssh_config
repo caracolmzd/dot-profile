@@ -41,10 +41,10 @@ Host cyberpower-vpn
 	User mzd
 	IdentityFile ~/.ssh/id_rsa_2020
 
-Host github
+Host github.com
 	HostName github.com
 	User git
-	IdentityFile ~/.ssh/github_apr_21
+	IdentityFile ~/.ssh/github_auth_zereshk
 
 Host nadcp
 	HostName 3.227.133.187
